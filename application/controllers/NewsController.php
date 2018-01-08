@@ -32,6 +32,10 @@
 							],
 						];
 
+			$art_id = $_GET['id'];
+			$news_content_s = array_search('id', $news_content);
+			dump($news_content_s);
+
 			$this->view->render('News One Page', $vars = ['news_content' => $news_content]);
 		}
 

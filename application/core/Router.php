@@ -6,106 +6,118 @@ use application\lib\Db;
 
 class Router
 {
-	protected $routes = [];
-	protected $params = [];
-	protected $main_url = '';
-	protected $url_params = '';
-	protected $post_vars = [];
-	
-	public function __construct()	{
-		$rts = require 'application/config/routes.php';
-		foreach ($rts as $key => $value) {
-			$this->add($key, $value);
-		}
-	}
+  protected $routes = [];
+  protected $params = [];
+  protected $main_url = '';
+  protected $url_params = '';
+  protected $post_vars = [];
+  
+  public function construct()  {
+    $rts = require 'application/config/routes.php';
+    foreach ($rts as $key => $value) {
+      $this->add($key, $value);
+    }
+  }
 
-	public function add($route, $params) {
-		$route = '#^'.$route.'$#';
-		$this->routes[$route] = $params;
-		// dump($this->routes);
-	}
+  public function add($route, $params) {
+    $route = '#^'.$route.'$#';
+    $this->routes[$route] = $params;
+    // dump($this->routes);
+  }
 
-	public function match() {
+  public function match() {
 
-		$this->processUrl( $_SERVER['REQUEST_URI'] );
-		
-		foreach ($this->routes as $route => $params) {
-			if ( preg_match($route, $this->main_url, $matches) ) {
-				$this->params = $params;
-				return true;
-			}
-		}
-		return false;
-	}
+    $this->processUrl( $_SERVER['REQUEST_URI'] );
 
-	public function run() {
+    
+    foreach ($this->routes as $route => $params) {
 
-		if ($this->match()) {
-			$path = 'application\controllers\\' . ucfirst( $this->params['controller']) . 'Controller';
-		
-			if ( class_exists($path) ) {
-				$action = $this->params['action'];
+      if ( preg_match($route, $this->main_url, $matches) ) {
+        $this->params = $params;
+        return true;
+      }
+    }
+    return false;
+  }
 
-				
-				if (method_exists($path, $action)) {
-					$controller = new $path( $this->params, $this->url_params, $this->post_vars );
-					$controller->$action();
+  public function run() {
 
-				}
-				else {
-					echo $action . ' not found! <br/>LINE: ' . __LINE__ . '<BR> METHOD: ' . __METHOD__;
-				}
-			}
-			else {
-				echo $path . ' not found! <br/>LINE: ' . __LINE__ . '<BR> METHOD: ' . __METHOD__;
-			}
+    if ($this->match()) {
+      $path = 'application\controllers\\' . ucfirst( $this->params['controller']) . 'Controller';
+    
+      if ( class_exists($path) ) {
+        $action = $this->params['action'];
 
-		} 
-		else {
-			// $view = new View();
-			// $view->render('404', ['errors' => ['No such route defined']]);
-			echo 'page not found';
-		}
-	}
+        
+        if (method_exists($path, $action)) {
+          $controller = new $path( $this->params, $this->url_params, $this->post_vars );
+          $controller->$action();
 
-	private function processUrl($url) {
-		
-		$s_url = trim( $url, "/" );
-		$url = explode ( "/", $s_url );
+        }
+        else {
+          echo $action . ' not found! <br/>LINE: ' . __LINE . '<BR> METHOD: ' . METHOD;
+        }
+      }
+      else {
+        echo $path . ' not found! <br/>LINE: ' . LINE . '<BR> METHOD: ' . METHOD;
+      }
 
-		// выделяем два первых параметра из урла (по нашим правилам рутинга это контроллер и метод этого контроллера)
-		$main_url = array_slice($url, 0, 2);
-		$this->main_url = $this->sanitizeInput( implode('/', $main_url) );
+    } 
+    else {
+      // $view = new View();
+      // $view->render('404', ['errors' => ['No such route defined']]);
+      echo 'page not found';
+    }
+  }
 
-		// это все остальные параметры в урле - их может быть сколько угодно, весь их разбор остается за разработчиком внутри контроллеров
-		// 
-		$this->url_params = $this->sanitizeInput( array_slice($url, 2) );
+  private function processUrl($url) {
+    
+    $s_url = trim( $url, "/" );
+    $url = explode ( "/", $s_url );
+
+    // выделяем два первых параметра из урла (по нашим правилам рутинга это контроллер и метод этого контроллера)
 
 
-		if ( !empty($_POST) ) {
-			$this->post_vars = $this->sanitizeInput($_POST);
-		}
-			
 
-	}
+    // $main_url = array_slice($url, 0, 2);
+    // $this->main_url = $this->sanitizeInput( implode('/', $main_url) );
 
-	private function sanitizeInput($str) {
+    $main_url = trim( parse_url($_SERVER['REQUEST_URI'])['path'], "/" );
 
-		if ( is_array($str) ) {
-			$res = [];
-			foreach ($str as $k => $s) {
-				$res[$k] = trim($s);
-				$res[$k] = strip_tags($s);
-				$res[$k] = htmlspecialchars($res[$k]);
-			}
-			return $res;
-		}
+    $this->main_url = $main_url;
 
-		$input_text = trim($str);
-		$input_text = strip_tags($input_text);
-		$input_text = htmlspecialchars($input_text);
 
-		return $input_text;
-	}
+
+
+    // это все остальные параметры в урле - их может быть сколько угодно, весь их разбор остается за разработчиком внутри контроллеров
+    // 
+    $this->url_params = $this->sanitizeInput( array_slice($url, 2) );
+
+
+    if ( !empty($_POST) ) {
+      $this->post_vars = $this->sanitizeInput($_POST);
+    }
+      
+
+  }
+
+  private function sanitizeInput($str) {
+
+    if ( is_array($str) ) {
+      $res = [];
+      foreach ($str as $k => $s) {
+        $res[$k] = trim($s);
+        $res[$k] = strip_tags($s);
+        $res[$k] = htmlspecialchars($res[$k]);
+      }
+      return $res;
+    }
+
+    $input_text = trim($str);
+    $input_text = strip_tags($input_text);
+    $input_text = htmlspecialchars($input_text);
+
+    return $input_text;
+  }
 
 }
