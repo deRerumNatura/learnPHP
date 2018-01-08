@@ -38,5 +38,9 @@ return [
 	'news/showOne' => [
 		'controller' => 'news',
 		'action' => 'showOne'
-	]
+	],
+	'news/showAll' => [
+		'controller' => 'news',
+		'action' => 'showAll'
+	],
 ];
