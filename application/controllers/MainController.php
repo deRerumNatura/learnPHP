@@ -25,9 +25,9 @@
 							],
 						];
 		// echo __METHOD__;
-			$this->view->render('Main Page', $article);
+			$this->view->render('Home', $article);
 		}
-		public function admin() {
+		public function adminnews() {
 			$this->view->render('Admin Page');
 		}
 	}

@@ -1,10 +1,12 @@
-<p>main page content</p>
+
+<section>
 	<?php foreach ($vars as $article):?>
-		<article>
 			<a href="news/showOne?id=<?php echo $article['id']; ?>">
 				<?php echo $article['title']; ?>
 			</a>
-		</article>
 	<?php endforeach; ?>
-	<br>
+</section>
+<section >
 	<a href="news/showAll">Show All</a>
+</section>
+	

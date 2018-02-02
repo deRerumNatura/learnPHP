@@ -1,0 +1,9 @@
+.success {
+    background: lightgreen;
+    padding: 5px;
+}
+
+.danger {
+    background: pink;
+    padding: 5px;
+}

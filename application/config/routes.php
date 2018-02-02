@@ -7,10 +7,10 @@ return [
 		'controller' => 'main',
 		'action' => 'index'
 	],
-	'main/admin' => [
-		'controller' => 'main',
-		'action' => 'admin'
-	],
+//	'main/adminnews' => [
+//		'controller' => 'main',
+//		'action' => 'adminnews'
+//	],
 	'account/login' => [
 		'controller' => 'account',
 		'action' => 'login'
@@ -26,6 +26,10 @@ return [
 	'account/register' => [
 		'controller' => 'account',
 		'action' => 'register'
+	],
+	'account/enter' => [
+		'controller' => 'account',
+		'action' => 'enter'
 	],
 	'news' => [
 		'controller' => 'news',
@@ -43,4 +47,31 @@ return [
 		'controller' => 'news',
 		'action' => 'showAll'
 	],
+    /*
+     * __ADMIN__
+     */
+    'admin' => [
+        'controller' => 'admin',
+        'action' => 'index'
+    ],
+    'admin/news' => [
+        'controller' => 'adminnews',
+        'action' => 'index'
+    ],
+    'adminnews/create' => [
+        'controller' => 'adminnews',
+        'action' => 'create'
+    ],
+    'adminnews/update' => [
+        'controller' => 'adminnews',
+        'action' => 'update'
+    ],
+    'adminnews/delete' => [
+        'controller' => 'adminnews',
+        'action' => 'delete'
+    ],
+    'adminnews/image' => [
+        'controller' => 'adminnews',
+        'action' => 'insertImage'
+    ],
 ];

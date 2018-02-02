@@ -1,5 +1,9 @@
-<?php foreach ($vars['news_content'] as $news) : ?>
-<div><?php echo $news['id'];//['id'] ?></div>
-<div><?php echo $news['title'] ?></div>
-<div><?php echo $news['content'] ?></div>
-<?php endforeach; ?>
+<section>
+<?php foreach ($vars as $key => $val):?>
+		<article >
+			<a href="/news/showOne?id=<?php echo $val['id']; ?>">
+				<?php echo $val['title']; ?>
+			</a>
+		</article>
+	<?php endforeach; ?>
+</section>

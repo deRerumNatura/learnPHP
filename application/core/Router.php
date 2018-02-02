@@ -12,37 +12,39 @@ class Router
   protected $url_params = '';
   protected $post_vars = [];
   
-  public function construct()  {
+  public function __construct()  {
     $rts = require 'application/config/routes.php';
     foreach ($rts as $key => $value) {
       $this->add($key, $value);
     }
+//     dump($this->routes);
   }
 
   public function add($route, $params) {
     $route = '#^'.$route.'$#';
     $this->routes[$route] = $params;
-    // dump($this->routes);
   }
 
   public function match() {
 
     $this->processUrl( $_SERVER['REQUEST_URI'] );
-
     
     foreach ($this->routes as $route => $params) {
+    // dump($this->main_url);
 
-      if ( preg_match($route, $this->main_url, $matches) ) {
-        $this->params = $params;
-        return true;
-      }
+//        dump($route);
+        if ( preg_match($route, $this->main_url, $matches) ) {
+            $this->params = $params;
+            return true;
+        }
     }
-    return false;
+      return false;
   }
 
   public function run() {
 
     if ($this->match()) {
+//        echo 'sdfsf';
       $path = 'application\controllers\\' . ucfirst( $this->params['controller']) . 'Controller';
     
       if ( class_exists($path) ) {
@@ -50,16 +52,17 @@ class Router
 
         
         if (method_exists($path, $action)) {
+          // dump($action);
           $controller = new $path( $this->params, $this->url_params, $this->post_vars );
           $controller->$action();
 
         }
         else {
-          echo $action . ' not found! <br/>LINE: ' . __LINE . '<BR> METHOD: ' . METHOD;
+          echo $action . ' not found! <br/>LINE: ' . __LINE__ . '<BR> METHOD: ' . __METHOD__;
         }
       }
       else {
-        echo $path . ' not found! <br/>LINE: ' . LINE . '<BR> METHOD: ' . METHOD;
+        echo $path . ' not found! <br/>LINE: ' . __LINE__ . '<BR> METHOD: ' . __METHOD__;
       }
 
     } 
@@ -82,7 +85,9 @@ class Router
     // $main_url = array_slice($url, 0, 2);
     // $this->main_url = $this->sanitizeInput( implode('/', $main_url) );
 
-    $main_url = trim( parse_url($_SERVER['REQUEST_URI'])['path'], "/" );
+    $main_url = parse_url($_SERVER['REQUEST_URI'])['path'];
+     $main_url = trim( $main_url, "/" );
+
 
     $this->main_url = $main_url;
 
