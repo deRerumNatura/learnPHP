@@ -8,11 +8,15 @@
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
-
-<form action="/adminnews/create" method="post">
+<?php //dump($_POST); ?>
+<form action="/adminnews/create" method="post" enctype="multipart/form-data">
     <input type="text" name="title">
     <textarea name="content" id="" cols="30" rows="10"></textarea>
     <input type="date" name="date">
+    <!--        форма отправки файла            -->
+    <input type="file" name="fileToUpload" id="fileToUpload">
     <input type="submit" value="Создать">
+    <!--    <input type="submit" value="Upload Image" name="submitImg">-->
+
 </form>
 

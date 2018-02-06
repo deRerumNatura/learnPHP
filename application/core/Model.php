@@ -25,6 +25,15 @@
         {
             $sql = 'INSERT INTO ' . $table . '(' . implode(",", $columns) . ') VALUES  ( "' . implode('","', $values) . '")';
             $query = $this->pdo->prepare($sql);
+            $query->execute();
+
+            return $this->pdo->lastInsertId();
+        }
+
+        protected function createImageRecord($table, $column, $imageName, $id)
+        {
+            $sql = ' UPDATE ' . $table . ' SET ' . $column . ' = ' . ' " ' . $imageName . ' " ' . ' WHERE id = ' . $id;
+            $query = $this->pdo->prepare($sql);
             return $query->execute();
         }
 
@@ -35,7 +44,7 @@
             return $result;
         }
 
-        protected function getOne($table, $id)
+        public function getOne($table, $id)
         {
             $query = $this->pdo->prepare('SELECT * FROM ' . $table . ' WHERE id = ' . $id);
             $query->execute();
@@ -54,7 +63,7 @@
                 $postString[] .=   $key . ' = "' . $value . '"';
             }
             $postString = implode(",", $postString);
-
+            dump($post['id']);
             $sql = ' UPDATE ' . $table . ' SET ' . $postString . ' WHERE id = ' . $post['id']; // where id = post [id]
             $query = $this->pdo->prepare($sql);
             return $query->execute();

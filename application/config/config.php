@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 	    define('CHARSET', 'utf8');
 	    define('VIEWS_PATH', 'application/views');
 	    define('PUBLIC_PATH', '/public');
-	    define('IMAGE_PATH', '/public/images');
+	    define('IMAGE_PATH', '/public/images/');
 
 	    
 function dump($str) {
