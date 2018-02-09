@@ -7,7 +7,6 @@
     {
         public $pdo;
 
-
         public function __construct()
         {
             $dsn = "mysql:host=" . HOST . ";dbname=" . DB . ";charset=" . CHARSET;
@@ -23,6 +22,7 @@
 
         protected function createRecord($table, $columns = [], $values = [])
         {
+//            dump($table);
             $sql = 'INSERT INTO ' . $table . '(' . implode(",", $columns) . ') VALUES  ( "' . implode('","', $values) . '")';
             $query = $this->pdo->prepare($sql);
             $query->execute();
@@ -37,9 +37,14 @@
             return $query->execute();
         }
 
-        protected function getAll($table, $columns = [])
+        protected function getAll($table, $columns = [], $condition = '')
         {
-            $query = $this->pdo->query( 'SELECT '. implode(",", $columns) . ' FROM ' . $table );
+            if(!empty($condition)) {
+                $query = $this->pdo->query( 'SELECT '. implode(",", $columns) . ' FROM ' . $table . ' WHERE topic_id=' . $condition );
+            }
+            else {
+                $query = $this->pdo->query( 'SELECT '. implode(",", $columns) . ' FROM ' . $table );
+            }
             $result = $query->fetchAll();
             return $result;
         }
@@ -63,7 +68,7 @@
                 $postString[] .=   $key . ' = "' . $value . '"';
             }
             $postString = implode(",", $postString);
-            dump($post['id']);
+//            dump($post['id']);
             $sql = ' UPDATE ' . $table . ' SET ' . $postString . ' WHERE id = ' . $post['id']; // where id = post [id]
             $query = $this->pdo->prepare($sql);
             return $query->execute();

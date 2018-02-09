@@ -7,10 +7,6 @@ return [
 		'controller' => 'main',
 		'action' => 'index'
 	],
-//	'main/adminnews' => [
-//		'controller' => 'main',
-//		'action' => 'adminnews'
-//	],
 	'account/login' => [
 		'controller' => 'account',
 		'action' => 'login'
@@ -74,4 +70,27 @@ return [
         'controller' => 'adminnews',
         'action' => 'insertImage'
     ],
+    /*
+     * __FORUM__
+     */
+    'forum' => [
+        'controller' => 'forum',
+        'action' => 'showTopics'
+    ],
+    'forum/showone' => [
+        'controller' => 'forum',
+        'action' => 'showOneTopic'
+    ],
+    'forum/add' => [
+        'controller' => 'forum',
+        'action' => 'addTopic'
+    ],
+    /*
+     * __MESSAGES__
+     */
+    'message/add' => [
+        'controller' => 'message',
+        'action' => 'add'
+    ],
+
 ];

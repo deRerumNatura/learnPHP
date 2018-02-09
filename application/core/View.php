@@ -20,7 +20,6 @@ class View
 		// dump($this->path); // main/index
 		$template = 'application/views/' . $this->path . '.php';
 		$layout = 'application/views/layouts/' . $this->layout . '.php';
-
 		ob_start();
 		
 		if ( !empty($vars['errors']) ) {
